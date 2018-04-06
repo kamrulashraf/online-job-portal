@@ -1,0 +1,339 @@
+create table jobseeker(
+
+jobseeker_id varchar2(200) not null,
+username varchar2(200),
+password varchar2(200),
+email_id varchar2(200),
+first_name varchar2(200),
+middle_name varchar2(200),
+last_name varchar2(200),
+nationality varchar2(200),
+martial_status varchar2(200),
+gender varchar2(200),
+
+    
+CONSTRAINT jobseeker_jobseeker_id_pk PRIMARY KEY (jobseeker_id)   
+);
+
+
+
+create table forum(
+
+account_id varchar2(200) NOT NULL,
+topic varchar2(100),
+published_time date,
+author_id varchar2(200),
+post_no number,
+article_description varchar2(200),
+
+CONSTRAINT FORUM_author_id_pk PRIMARY KEY (author_id)    
+
+);
+
+
+
+create table resume(
+
+resume_id varchar2(200) not NULL,
+post_date date,
+skilled_in varchar2(200),
+special_course_name varchar2(200),
+institution_name varchar2(200),
+date_of_birth date,
+experienced_in varchar2(200),
+experience_year varchar2(200),
+recently_worked_for varchar2(200),
+father_occupation varchar2(200),
+father_name varchar2(200),
+mother_occupation varchar2(200),
+mother_name varchar2(200),
+
+CONSTRAINT resume_resume_id_pk PRIMARY KEY (resume_id )  
+
+)
+
+
+create table upload(
+resume_id varchar2(200) not null,
+jobseeker_id varchar2(200) not null,
+CONSTRAINT upload_jobseeker_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id), 
+CONSTRAINT upload_resume_id_FK FOREIGN KEY(resume_id) REFERENCES resume(resume_id)   
+
+
+)
+
+
+create table blogpost(
+
+jobseeker_id varchar2(200) not null,
+author_id varchar2(200) not null,
+CONSTRAINT blogpost_jobseeker_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id) on delete cascade, 
+CONSTRAINT blogpost_author_id_FK FOREIGN KEY(author_id) REFERENCES forum(author_id) on delete cascade  
+
+)
+
+
+create table creating(
+  jobseeker_id varchar2(200) not null,
+  agent_id varchar2(200) not null,
+   primary key(jobseeker_id)
+CONSTRAINT creating_jobseeker_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id) on delete cascade, 
+CONSTRAINT creating_agent_id_FK FOREIGN KEY(agent_id) REFERENCES jobagent(agent_id) on delete cascade
+
+)
+
+
+
+create table apply(
+ jobseeker_id varchar2(200) not null,
+ job_id varchar(20) NOT NULL, 
+ 
+CONSTRAINT apply_jobseeker_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id), 
+CONSTRAINT apply_job_id_FK FOREIGN KEY(job_id) REFERENCES jobs(job_id) 
+  
+)
+
+create table EMPLOYEEADRESS(
+   employee_id varchar2(20),
+   house_no varchar2(20),
+   district varchar2(20),
+   postal_code varchar2(20),
+   adress_type varchar2(20),
+   village_name varchar2(20),
+   street_no varchar2(20)
+)
+
+
+create table EMPLOYEE(
+   employee_id varchar2(200) not null,
+   user_name varchar2(20) not null,
+   password varchar2(100),
+   first_name varchar2(200),
+   middle_name varchar2(200),
+   last_name varchar2(200),
+   designation varchar2(20),
+   department_name varchar2(20),
+   join_date date,
+  
+CONSTRAINT EMPLOYEE_employee_id_pk PRIMARY KEY (employee_id)   
+
+)
+
+create table Salary (
+ employee_id varchar2(200) PRIMARY KEY  not null
+    REFERENCES employee(employee_id)
+    ON DELETE CASCADE,
+basic_pay varchar2(20) check (basic_pay>0),
+additional_pay number,
+payment_method varchar2(20),
+gratuaty_ammount varchar2(20),
+gratuaty_year varchar(20)
+
+);
+
+create table monthly_salary_status(
+   employee_id varchar2(20) ,
+   month varchar2(20) not null,
+   year varchar(20),
+   bonus number,
+   payment_date date,
+   payment_status varchar2(200) 
+)
+
+
+// no need **************
+create table get_salary(
+
+salary_id varchar(20) NOT NULL,
+ employee_id varchar(20) not null,
+
+CONSTRAINT get_salary_salary_id_FK FOREIGN KEY(salary_id) REFERENCES salary(salary_id), 
+CONSTRAINT get_salary_ employee_id_FK FOREIGN KEY( employee_id) REFERENCES employee( employee_id)   
+
+
+)
+ end no need ***************//
+
+create table JOBS (
+job_id varchar2(20) NOT NULL, 
+job_type varchar2(200),
+job_category varchar2(200),
+required_qualification varchar2(500),
+required_experince varchar2(500),
+dead_line date,
+job_salary number,
+
+
+CONSTRAINT jobs_job_id_pk PRIMARY KEY (job_id)
+);
+
+create table job_location (
+      job_id varchar2(20) not null,
+	  district varchar2(30) not null,
+	  division varchar2(30) not  null,
+	  country varchar2 (30) not null,
+	  CONSTRAINT job_location_ job_id_FK FOREIGN KEY( job_id) REFERENCES jobs( job_id) on delete cascade
+)
+
+
+
+create table PAYMENT(
+   payment_id varchar2(20) not null,
+   service_id varchar2(20) not null,
+   payment_status varchar2(20),
+   payment_ammount number,
+   payment_method varchar2(20),
+   service_type varchar2(20),
+   payment_date dob
+  
+)
+
+create table advertisement(
+    advertisement_id varchar2(20),
+    advertisement_size varchar2(20),
+    advertisement_cost varchar2(20),
+    start_time dob not null,
+    ending_time dob not null,
+    advertisement_status varchar2(200),
+    advertisement_title varchar2(20),
+    advertisement_type varchar2(200),
+    constraint pk_service_id primary key (service_id)
+    
+   CONSTRAINT COMPANY_company_id_pk PRIMARY KEY (company_id )
+
+)
+
+
+create table status(
+  payment_id varchar2(20) not null,
+  advertisement_id varchar2(20) not null,
+
+CONSTRAINT status_payment_id_FK FOREIGN KEY(payment_id) REFERENCES payment(payment_id), 
+ CONSTRAINT status_advertisement_id_FK FOREIGN KEY(advertisement_id) REFERENCES advertisement(advertisement_id)  
+
+ )
+
+
+create table COMPANY(
+    company_id varchar2(20) not null,
+    company_name varchar2(20) not null,
+    email_id varchar2(20) not null,
+    company_alternate_name varchar2(20),
+    password varchar2(200) not null,
+    user_name varchar2(20) not null,
+	alternate_company_name varchar2(200)
+    
+   
+   CONSTRAINT COMPANY_company_id_pk PRIMARY KEY (company_id )  
+)
+
+create table TRAINING(
+  course_id varchar2(20) not null,
+  course_type varchar2(20),
+  company_name varchar2(20) not null,
+  course_start_date dob,
+  course_end_date dob,
+  constraint pk_course_id primary (course_id)
+CONSTRAINT TRAINING_course_id_pk PRIMARY KEY (course_id)   
+)
+
+create table give_training(
+  course_id varchar2(20) not null,
+  company_id varchar2(20) not null,
+ COSNTRAINT give_training_course_id_FK FOREIGN KEY(course_id) REFERENCES training(course_id) on delete cascade, 
+ CONSTRAINT give_training_company_id_FK FOREIGN KEY(company_id) REFERENCES company(company_id) on delete cascade 
+   
+)
+
+create table get_training(
+     course_id varchar2(20) not null,
+	 jobseeker_id varchar2(200) not null,
+
+ COSNTRAINT get_training_course_id_FK FOREIGN KEY(course_id) REFERENCES training(course_id) on delete cascade, 
+ CONSTRAINT get_training_company_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id) on delete cascade 
+
+
+)
+
+create table pay(
+  company_id varchar2(20) not null,
+   payment_id varchar2(20) not null,
+
+ CONSTRAINT pay_payment_id_FK FOREIGN KEY(payment_id) REFERENCES payment(payment_id), 
+ CONSTRAINT pay_training_company_id_FK FOREIGN KEY(company_id) REFERENCES company(company_id) 
+
+)
+
+
+
+
+create table jobagent(
+
+    agent_id varchar2(20) not null,
+    agent_name varchar2(20), 
+    salary_upper_bound number,
+	salary_lower_bound number,
+    job_category varchar2(200),
+    job_type varchar2(20),
+    
+    CONSTRAINT jobagent_agent_id_pk PRIMARY KEY (agent_id),
+    CONSTRAINT jobseeker_id_FK FOREIGN KEY(jobseeker_id) REFERENCES jobseeker(jobseeker_id)
+)
+
+
+create table JOBAGENT_PREFERED_JOB_AREA(
+    agent_id varchar2(20) not null,
+	country varchar2(20),
+    division varchar2(20),
+    city varchar2(20),
+    district varchar2(20),
+	 CONSTRAINT JOBAGENT_PREFERED_JOB_AREA_agent_id_FK FOREIGN KEY(agent_id) REFERENCES jobagent(agent_id) on delete cascade
+)
+
+
+
+
+create table schedule(
+    course_id varchar2(20) not null,
+    class_location varchar2(20),
+    class_start_time varchar2(20),
+	class_end_time varchar2(20),
+    class_date dob,
+    class_day varchar2(20)
+)
+
+create table job_seeker_mobile_number(
+    jobseeker_id  varchar2(200),
+    mobile_number varchar2(200),
+Constraint jsm_ji_fk foreign key(jobseeker_id) references jobseeker(jobseeker_id)
+On update cascade on delete cascade;
+)
+
+
+CREATE TABLE employee_mobile_number(
+    employee_id varchar2(200),   
+    mobile_number varchar2(200),
+Constraints emn_ei_fk erf foreign key(employee_id) references EMPLOYEE(employee_id)
+On update cascade on delete cascade;
+)
+
+CREATE TABLE COMPANYADDRESS(
+District varchar2 (20),
+Postal_code varchar2 (20),
+Street_address varchar2 (20),
+Country varchar2 (20),
+Company_id varchar2 (20),
+Constraint ca_ci_fk foreign key(company_id) references COMPANY(company_id)
+On update cascade on delete cascade; 
+)
+
+
+
+
+
+
+
+
+
+
+
